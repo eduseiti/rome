@@ -30,3 +30,5 @@ class ROMEHyperParams(HyperParams):
     mom2_dataset: str
     mom2_n_samples: int
     mom2_dtype: str
+
+    config_n_positions: str

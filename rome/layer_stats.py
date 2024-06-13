@@ -87,6 +87,7 @@ def layer_stats(
     batch_tokens=None,
     download=True,
     progress=tqdm,
+    positions_field="n_positions",
 ):
     """
     Function to load or compute cached stats.
@@ -95,16 +96,16 @@ def layer_stats(
     def get_ds():
         raw_ds = load_dataset(
             ds_name,
-            dict(wikitext="wikitext-103-raw-v1", wikipedia="20200501.en")[ds_name],
+            dict(wikitext="wikitext-103-raw-v1", wikipedia="20220301.en")[ds_name],
         )
-        maxlen = model.config.n_positions
+        maxlen = getattr(model.config, positions_field)
         if batch_tokens is not None and batch_tokens < maxlen:
             maxlen = batch_tokens
         return TokenizedDataset(raw_ds["train"], tokenizer, maxlen=maxlen)
 
     # Continue with computation of statistics
     batch_size = 100  # Examine this many dataset texts at once
-    npos = model.config.n_positions
+    npos = getattr(model.config, positions_field)
     if batch_tokens is None:
         batch_tokens = npos * 3  # Sort and divide into batches with this many tokens
     if precision is None:
