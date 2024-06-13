@@ -32,3 +32,4 @@ class ROMEHyperParams(HyperParams):
     mom2_dtype: str
 
     config_n_positions: str
+    config_n_embeddings: str
